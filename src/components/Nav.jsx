@@ -1,8 +1,7 @@
-import { FaAvianex, FaGlobeAmericas} from 'react-icons/fa'
-import { GiCommercialAirplane, GiRadarSweep } from 'react-icons/gi'
+import React from 'react';
 
 
-import './style.css'
+import './nav.css'
 
 function Navlateral() {
   return (

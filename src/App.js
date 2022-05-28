@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import Map from './components/Map'
-import Sidebar from './components/Nav';
+
 import { divIcon } from 'leaflet';
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
@@ -20,10 +20,7 @@ function App() {
   return (
     
     <div className="App">
-    <Map />
-   
-    
-    
+    <Map />    
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Tooltip } from 'react-leaflet'
+import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet'
 import L from 'leaflet'
 import airplane from './airplane.png'
 
@@ -22,8 +22,11 @@ function Maps() {
   const [flights, setFlights] = useState([]);
   const [selectedFlightId, setSelectedFlightId] = useState(null);
   const [isShowSpecificFlight, setIsShowSpecificFlight] = useState(false);
+  const [atc, setATC] = useState([]);
 
-  console.log(selectedFlightId)
+  const redOptions = { color: 'red' }
+
+  console.log(atc);
 
   // Pegando informações da API
 
@@ -34,6 +37,21 @@ function Maps() {
       const res = response.data.result;
       if (res !== undefined) {
         setFlights(res);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+
+  }
+
+  const getLiveATC = async () => {
+
+    try {
+      const response = await axios.get('https://api.infiniteflight.com/public/v2/sessions/7e5dcd44-1fb5-49cc-bc2c-a9aab1f6a856/atc?apikey=nvo8c790hfa9q3duho2jhgd2jf8tgwqw');
+      const res = response.data.result;
+      if (res !== undefined) {
+        setATC(res);
       }
     } catch (error) {
       console.log(error);
@@ -54,6 +72,18 @@ function Maps() {
       clearInterval(intervalId)
     }
   }, [flights])
+
+  useEffect(() => {
+    getLiveATC()
+  }, [])
+
+  useEffect(() => {
+    const intervalId = setInterval(getLiveATC, 3000)
+    return () => {
+      console.log('clearing interval')
+      clearInterval(intervalId)
+    }
+  }, [atc])
 
   //console.log(flights)
 
@@ -82,6 +112,14 @@ function Maps() {
             <strong>{flight?.callsign}</strong>
           </Tooltip>
         </RotatedMarker>
+      )) : ""}
+      {atc?.length > 0 ? atc?.map((atc, idx) => (
+        <CircleMarker key={idx} center={[atc?.latitude || 0, atc?.longitude || 0]} radius={20} pathOptions={redOptions}>
+          <Tooltip direction="top">
+          Airport:<strong>{atc?.airportName}</strong>
+          
+          </Tooltip>
+        </CircleMarker>
       )) : ""}
 
     </MapContainer>

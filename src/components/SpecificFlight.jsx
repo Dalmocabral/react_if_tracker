@@ -53,10 +53,7 @@ useEffect(() => {
 
 console.log("RENDERING SPECIFIC FLIGHT component");
 
-{for (let i = 0; i < specificFlight.length; i++) {
-  console.log(specificFlight[i]);
-}
- }
+
 
 return (
   <div>
